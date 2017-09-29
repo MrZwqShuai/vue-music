@@ -22,7 +22,7 @@ export default {
   },
   data () {
     return {
-      tilte: 'hhh'
+      tilte: '嗡嗡嗡'
     }
   }
 }
