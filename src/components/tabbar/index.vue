@@ -11,6 +11,7 @@
 <script>
 export default {
   name: 'tabbar',
+  props: ['data'],
   data () {
     return {
       tabTitle: [{
@@ -22,20 +23,26 @@ export default {
       }
       ],
       tabUrl: ['/recommend', 'hot', 'search'],
-      currentIndex: 0
+      currentIndex: this.data.index
     }
   },
   computed: {
     currentTabbar () {
-      return this.currentIndex
+      return this.data.index
     }
   },
   methods: {
     toggleTabbar (index) {
       console.log(index)
-      this.currentIndex = index
+      this.data.index = index
       this.$router.push({path: this.tabUrl[index]})
     }
+  },
+  mounted () {
+    console.log('父组件传递的data', this.data.index)
+    setTimeout(() => {
+      console.log(this.data.index)
+    }, 2000)
   }
 }
 </script>

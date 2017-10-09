@@ -9,15 +9,17 @@ export class SlidePages {
     }
   }
   flip () {
-    console.log(this.el.targetTouches[0].clientX, this.el.targetTouches[0].clientY)
+    console.log(this.el.targetTouches[0].clientX)
   }
-  touchDistance () {
-    this.touchMoveFunc()
+  touchDistance (e) {
+    return this.touchMoveFunc(e)
   }
-  touchMoveFunc () {
-    return this.clientX - this.initPosition.x
+  touchMoveFunc (e) {
+    console.log('滑动的距离: ', e.targetTouches[0].clientX, this.initPosition.x)
+    return e.targetTouches[0].clientX - this.initPosition.x
   }
   touchStartFunc () {
     this.initPosition.x = this.clientX
+    console.log('记录手指按下的x距离: ', this.initPosition.x)
   }
 }

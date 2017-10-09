@@ -3,9 +3,9 @@
     <HomeTop></HomeTop>
     <div class="home-body">
       <div class="home-nav">
-        <Tabbar></Tabbar>
+        <Tabbar :data="myData"></Tabbar>
       </div>
-      <div class="home-main" @touchstart="tStart" @touchmove="tMove" >
+      <div style="display: block" class="home-main" @touchstart="tStart" @touchmove="tMove" @touchend="tEnd" ref="songPages">
         <transition name="fade">
           <router-view></router-view>
         </transition>
@@ -25,21 +25,37 @@ export default {
   },
   data () {
     return {
-      tilte: '嗡嗡嗡'
+      tilte: '嗡嗡嗡',
+      distance: 0,
+      myData: {
+        index: 2
+      }
     }
   },
   methods: {
     tStart (e) {
-      let slide = new SlidePages(e)
-      slide.flip()
+      this.slide = new SlidePages(e)
+      this.slide.touchStartFunc()
     },
     tMove (e) {
-      let slide = new SlidePages(e)
-      slide.flip()
+      this.distance = this.slide.touchDistance(e)
+      this.$refs.songPages.style.WebkitTransform = `translate(${this.distance}px)`
+      console.log('distance', this.distance)
+    },
+    tEnd (e) {
+      console.log('触摸结束', this.distance, this.$refs.songPages.getBoundingClientRect().width / 2)
+      if (this.distance > this.$refs.songPages.getBoundingClientRect().width / 2) {
+        this.$router.push('hot')
+        this.$refs.songPages.style.WebkitTransform = 'translate(0px)'
+        this.distance = 0
+        this.myData.index = 1
+        return
+      }
+      this.$refs.songPages.style.WebkitTransform = 'translate(0px)'
     }
   },
   mounted () {
-    console.log(SlidePages)
+    console.log(this.$refs.songPages.style)
   }
 }
 </script>
@@ -68,5 +84,8 @@ export default {
 {
   /* opacity: 0; */
   transform: translate(100%, 0);
+}
+.home-main{
+  display: block;
 }
 </style>
